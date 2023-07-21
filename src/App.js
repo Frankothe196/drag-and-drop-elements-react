@@ -31,20 +31,19 @@ function App() {
   
   const handleMouseDown = (e)=>{
     // Mouse Down
-    // console.log('mouse down')
     // On mouse down start a 1 second timer
     timer.current = setTimeout(() => {
-        console.log(`Selected item id: ${e.target.id}`)
         setSelected(e.target.id)
       }, 1000
     );
   }
 
   const handleMouseUp = ()=>{
-    // console.log('mouse up')
     // On mouse up clear Interval
-    setSelected()
-    setSelectedData()
+    if(selected&&selectedData){
+      setSelected()
+      setSelectedData()
+    }
     clearTimeout(timer.current)
   }
 
@@ -55,7 +54,7 @@ function App() {
         setSelectedData(item)
       }
       return(
-        <div id={item.id} onMouseDown={(e)=>handleMouseDown(e)} onMouseUp={()=>{handleMouseUp()}} style={{opacity:`${selected&&selected==item.id?"0.8":"1"}`}}>
+        <div className="item" id={item.id} onMouseDown={(e)=>handleMouseDown(e)} style={{opacity:`${selected&&selected==item.id?"0.8":"1"}`}}>
           <span>{selected&&selected==item.id?"":item.text}</span>
         </div>
       )
@@ -74,18 +73,42 @@ function App() {
         hoverRef.current.style.opacity='1'
       }
     })
-    let style = {position: 'fixed', zIndex:2, height: "180px", width: "180px",opacity:"0"}
+
     if(data){
-      return(<div ref={hoverRef} style={style} onMouseUp={()=>handleMouseUp()}>{data.text}</div>)
-    }
-    else{
+      return(<div ref={hoverRef} className="selectedDiv"><span>{data.text}</span></div>)
+    }else{
       return ()=> document.removeEventListener(mouseHandler)
     }
   } 
 
   // Step 4: if mouse leaves container boundary cancel the whole operation
-  
+  // Done in main return
+
   // Step 5: On mouse release on a certain element, place the element to the left of that element, handle any shifting where necessary
+  const handleMoveSelection = (e)=>{
+    if(selected&&selectedData){
+      setData(curr=>{
+        let tempIndex
+        let temp
+        let arr
+        arr = curr.map((item,i)=>{
+          if(item.id==e.target.id){
+            temp=item.text
+            item.text=selectedData.text
+          }
+          if(item.id==selectedData.id){
+            tempIndex=i
+          }
+          return(item)
+        })
+        arr[tempIndex].text=temp
+        // console.log(arr)
+        return(arr)
+      })
+      setSelected()
+      setSelectedData()
+    }
+  }
   
   // NB: Is it better to actually move the whole element or just move its data?
 
@@ -99,7 +122,7 @@ function App() {
         </p>
       </header>
       <main onMouseLeave={()=>{handleMouseUp()}}>
-        <section className="container">
+        <section onMouseUp={(e)=>{handleMoveSelection(e)}} className={selected&&setSelectedData?"container moving":"container"}>
           <HoverWithMouse data={selectedData}/>
           <Items data={data} selected={selected}/>
         </section>

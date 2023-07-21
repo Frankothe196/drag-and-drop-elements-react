@@ -47,22 +47,82 @@ main .container{
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 50%;
+  width: 90%;
   margin: auto;
 }
 
-main div{
+main .container .item{
   position: relative;
   margin: 10px;
-  width: 80%;
+  width: 12vw;
   height: auto;
   aspect-ratio: 1/1;
-  margin: 20px;
+  margin: 20px auto;
   background: #cbd0d8;
   padding: 4px;
   border-radius: 2px;
   cursor: pointer;
   z-index: 0;
+  transition: 300ms;
+  -webkit-user-select: none; 
+  -ms-user-select: none;
+  user-select: none; 
+}
+
+main .container .item span{
+  pointer-events: none;
+}
+
+main .container.moving .item:hover{
+  animation: infinite 300ms Shake-Hover ease;
+}
+
+main .container .selectedDiv{
+  position: fixed;
+  opacity: 0;
+  width: 14vw;
+  height: auto;
+  z-index: 2;
+  aspect-ratio: 1/1;
+  background: #cbd0d8;
+  animation: infinite 500ms Shake-Selected ease;
+  pointer-events: none;
+}
+
+@keyframes Shake-Selected {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes Shake-Hover {
+  0% {
+    transform: rotate(0deg) translateY(-5px);
+  }
+  25% {
+    transform: rotate(-2deg) translateY(-5px);
+  }
+  50% {
+    transform: rotate(0deg) translateY(-5px);
+  }
+  75% {
+    transform: rotate(2deg) translateY(-5px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(-5px);
+  }
 }
 
 @keyframes App-logo-spin {
