@@ -36,6 +36,7 @@ main{
   height: 70vh;
   width: 60vw;
   overflow-y: scroll;
+  overflow-x: hidden;
   margin: 5% auto;
   border-radius: 20px;
   background: #3e4c69;
@@ -59,7 +60,9 @@ main div{
   margin: 20px;
   background: #cbd0d8;
   padding: 4px;
+  border-radius: 2px;
   cursor: pointer;
+  z-index: 0;
 }
 
 @keyframes App-logo-spin {
