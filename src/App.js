@@ -22,7 +22,7 @@ function App() {
 
   // PseudoCode
   // We need to make an item draggable, while maintaining a great good user experience
-  // Step 1: Handle mouse hold, Mark/Select the item as dragged if held for 1 second
+  // Step 1: Handle mouse hold, Mark/Select the item as dragged if held and mouse moved
   const [selected,setSelected] = useState()
   const [selectedData,setSelectedData] = useState()
   const timer = useRef()
@@ -32,10 +32,10 @@ function App() {
   const handleMouseDown = (e)=>{
     // Mouse Down
     // On mouse down start a 1 second timer
-    timer.current = setTimeout(() => {
-        setSelected(e.target.id)
-      }, 1000
-    );
+    setSelected(e.target.id)
+    // timer.current = setTimeout(() => {
+    //   }, 1000
+    // );
   }
 
   const handleMouseUp = ()=>{
@@ -49,7 +49,7 @@ function App() {
 
   // Step 2: Add a place holder/empty space for the selected item and make a copy of the item (or its data)
   const Items = ({data,selected}) =>{
-    const array =data?.map((item)=>{
+    const array = data?.map((item)=>{
       if(selected==item.id){
         setSelectedData(item)
       }
